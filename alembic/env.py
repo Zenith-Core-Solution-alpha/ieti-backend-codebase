@@ -29,8 +29,8 @@ if config.config_file_name is not None:
 # Alembic imports
 from app.core.db.session import Base  # Import Base with full metadata
 from app.books.models import Book, Author  
-from app.sneakers.models import Sneaker  
 from app.samplelogin.models import User  
+from app.sneakers.models import Sneaker  
 
 
 # Set metadata
