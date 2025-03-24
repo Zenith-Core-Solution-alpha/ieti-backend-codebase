@@ -9,7 +9,7 @@ python = "^3.9"
 fastapi = "^0.115.6"
 FastAPI-SQLAlchemy = "^0.2.1"
 orjson = "^3.10.15"
-pydantic = "^2.10.5"
+pydantic = {extras = ["email"], version = "^2.10.6"}
 python-dotenv = "^1.0.1"
 requests = "^2.32.3"
 SQLAlchemy = "^2.0.37"
