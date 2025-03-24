@@ -88,7 +88,7 @@ async def approve_user(user_id: int, status: str, db: Session = Depends(get_db))
     db.commit()
 
     return {
-        "message": f"User status updated to {status}",
+        "message": f" User status updated to {status}",
         "user": {
             "id": user.id,
             "username": user.username,
