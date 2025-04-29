@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.auth.services.user_service import create_user_admin, login_user, register_user, approve_user, list_users
+from app.auth.services.user_service import create_user_admin, login_user, register_user, approve_user, list_users, get_user_profile, update_user_profile 
 from app.core.db.session import get_db
 from app.auth.schemas.user import UserSchema
 # from app.core.security import admin_requireds
+from app.core.security import get_current_user
 
 router = APIRouter()
 # Will be used in future functions for security purposes dependencies=[Depends(admin_required)]
@@ -26,3 +27,11 @@ def approve_user_admin(user_id: int, status: str, db: Session = Depends(get_db))
 @router.get("/users", status_code=200)
 def get_all_user(user_id: int, status: str, db: Session = Depends(get_db)):
     return list_users(db, user_id, status)
+
+@router.get("/profile", status_code=200)
+def view_profile(user: UserSchema = Depends(get_current_user), db: Session = Depends(get_db)):
+    return get_user_profile(db, user.id)
+
+@router.put("/profile/update", status_code=200)
+def edit_profile(updated_data: dict, user: UserSchema = Depends(get_current_user), db: Session = Depends(get_db)):
+    return update_user_profile(db, user.id, updated_data)

@@ -153,3 +153,34 @@ def list_users(db: Session, status: str = "all"):
     return {
         "users": [{"id": u.id, "username": u.username, "status": u.status} for u in users]
     }
+
+def get_user_profile(db: Session, user_id: int):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "birthdate": user.birthdate,
+        "status": user.status,
+        "role": user.role.name,
+        "created_at": user.created_at,
+        "updated_at": user.updated_at
+    }
+
+def update_user_profile(db: Session, user_id: int, updated_data: dict):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Update user fields dynamically
+    for key, value in updated_data.items():
+        if hasattr(user, key) and value is not None:
+            setattr(user, key, value)
+
+    db.commit()
+    db.refresh(user)
+
+    return {"message": "Profile updated successfully", "user": user}
